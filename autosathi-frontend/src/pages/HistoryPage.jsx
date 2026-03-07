@@ -92,11 +92,25 @@ export default function HistoryPage() {
                 key={ride._id}
                 ride={ride}
                 actions={
-                  <button
-                    onClick={() => navigate(`/ride/${ride._id}`)}
-                    className="text-auto-yellow font-bold text-sm hover:underline">
-                    View Details →
-                  </button>
+                  <>
+                    {ride.status === "completed" && ride.payment?.status !== "paid" && (
+                      <button
+                        onClick={() => navigate(`/payment/${ride._id}`)}
+                        className="bg-orange-100 text-orange-700 hover:bg-orange-200 font-bold text-sm px-4 py-2 rounded-xl transition-all">
+                        💳 Pay ₹{ride.fare}
+                      </button>
+                    )}
+                    {ride.payment?.status === "paid" && (
+                      <span className="bg-green-100 text-green-700 font-bold text-sm px-4 py-2 rounded-xl">
+                        ✅ Paid ({ride.payment.method})
+                      </span>
+                    )}
+                    <button
+                      onClick={() => navigate(`/ride/${ride._id}`)}
+                      className="text-auto-yellow font-bold text-sm hover:underline ml-auto">
+                      View Details →
+                    </button>
+                  </>
                 }
               />
             ))}

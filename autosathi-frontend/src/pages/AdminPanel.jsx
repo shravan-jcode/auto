@@ -116,7 +116,7 @@ export default function AdminPanel() {
                   <StatCard icon="🛺" label="Total Rides"    value={stats.totalRides}     color="purple" />
                   <StatCard icon="✅" label="Completed"      value={stats.completedRides} color="green" />
                   <StatCard icon="⏳" label="Pending"        value={stats.pendingRides}   color="yellow" />
-                  <StatCard icon="❌" label="Cancelled"      value={stats.cancelledRides} color="red" />
+                  <StatCard icon="💰" label="Revenue (Paid)" value={`₹${rides.filter(r => r.payment?.status === "paid").reduce((s, r) => s + r.fare, 0)}`} color="green" />
                 </div>
 
                 {/* Recent Rides */}
@@ -275,6 +275,7 @@ export default function AdminPanel() {
                           <th className="text-left py-3 px-3 font-bold text-gray-500">From → To</th>
                           <th className="text-left py-3 px-3 font-bold text-gray-500">Fare</th>
                           <th className="text-left py-3 px-3 font-bold text-gray-500">Status</th>
+                          <th className="text-left py-3 px-3 font-bold text-gray-500">Payment</th>
                           <th className="text-left py-3 px-3 font-bold text-gray-500">Action</th>
                         </tr>
                       </thead>
@@ -289,6 +290,17 @@ export default function AdminPanel() {
                             </td>
                             <td className="py-2 px-3 font-bold text-auto-yellow">₹{r.fare}</td>
                             <td className="py-2 px-3"><StatusBadge status={r.status} /></td>
+                            <td className="py-2 px-3">
+                              <span className={`status-badge text-xs ${
+                                r.payment?.status === "paid"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-500"
+                              }`}>
+                                {r.payment?.status === "paid"
+                                  ? `✅ ${r.payment.method}`
+                                  : "⏳ Unpaid"}
+                              </span>
+                            </td>
                             <td className="py-2 px-3">
                               {["pending", "accepted", "ongoing"].includes(r.status) && (
                                 <button

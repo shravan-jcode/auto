@@ -30,6 +30,12 @@ export const completeRide    = (id)    => API.put(`/rides/${id}/complete`);
 export const cancelRide      = (id, reason) => API.put(`/rides/${id}/cancel`, { reason });
 export const rateDriver      = (id, rating, comment) => API.put(`/rides/${id}/rate`, { rating, comment });
 
+// ── Payment ───────────────────────────────────────────
+export const createPaymentOrder  = (rideId)  => API.post("/payment/create-order", { rideId });
+export const verifyPayment       = (data)    => API.post("/payment/verify", data);
+export const payCash             = (rideId)  => API.post("/payment/cash", { rideId });
+export const getPaymentStatus    = (rideId)  => API.get(`/payment/status/${rideId}`);
+
 // ── Admin ─────────────────────────────────────────────
 export const getAdminStats  = ()     => API.get("/admin/stats");
 export const getAllUsers     = ()     => API.get("/admin/users");

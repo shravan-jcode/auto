@@ -82,6 +82,28 @@ const rideSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+
+    // ─── Payment (Razorpay) ───────────────────────────────
+    payment: {
+      status: {
+        type: String,
+        enum: ["unpaid", "pending", "paid", "failed", "refunded"],
+        default: "unpaid",
+      },
+      method: {
+        type: String,
+        enum: ["online", "cash", null],
+        default: null,
+      },
+      // Razorpay order created before payment
+      razorpayOrderId: { type: String, default: null },
+      // Razorpay payment ID returned after success
+      razorpayPaymentId: { type: String, default: null },
+      // Razorpay signature for verification
+      razorpaySignature: { type: String, default: null },
+      paidAt: { type: Date, default: null },
+      amount: { type: Number, default: 0 }, // in rupees
+    },
   },
   { timestamps: true }
 );

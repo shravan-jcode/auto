@@ -12,6 +12,7 @@ import DriverDashboard from "./pages/DriverDashboard";
 import AdminPanel      from "./pages/AdminPanel";
 import HistoryPage     from "./pages/HistoryPage";
 import RideDetailPage  from "./pages/RideDetailPage";
+import PaymentPage     from "./pages/PaymentPage";
 
 function AppRoutes() {
   const { user } = useAuth();
@@ -38,6 +39,13 @@ function AppRoutes() {
         <Route path="/ride/:id" element={
           <ProtectedRoute>
             <RideDetailPage />
+          </ProtectedRoute>
+        } />
+
+        {/* Payment */}
+        <Route path="/payment/:rideId" element={
+          <ProtectedRoute allowedRoles={["user"]}>
+            <PaymentPage />
           </ProtectedRoute>
         } />
 

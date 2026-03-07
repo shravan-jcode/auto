@@ -14,9 +14,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ─── API Routes ───────────────────────────────────────────
-app.use("/api/auth",  require("./routes/authRoutes"));
-app.use("/api/rides", require("./routes/rideRoutes"));
-app.use("/api/admin", require("./routes/adminRoutes"));
+app.use("/api/auth",    require("./routes/authRoutes"));
+app.use("/api/rides",  require("./routes/rideRoutes"));
+app.use("/api/admin",  require("./routes/adminRoutes"));
+app.use("/api/payment", require("./routes/paymentRoutes"));
 
 // ─── Health Check ─────────────────────────────────────────
 app.get("/", (req, res) => {
@@ -24,9 +25,10 @@ app.get("/", (req, res) => {
     status: "✅ AutoSathi Backend is Running",
     version: "1.0.0",
     endpoints: {
-      auth:  "/api/auth",
-      rides: "/api/rides",
-      admin: "/api/admin",
+      auth:    "/api/auth",
+      rides:   "/api/rides",
+      admin:   "/api/admin",
+      payment: "/api/payment",
     },
   });
 });

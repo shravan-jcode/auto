@@ -267,6 +267,53 @@ export default function RideDetailPage() {
           </div>
         )}
 
+        {/* ── Payment Section ── */}
+        {ride.status === "completed" && user?.role === "user" && (
+          <div className={`card border-2 ${
+            ride.payment?.status === "paid"
+              ? "border-green-400 bg-green-50"
+              : "border-orange-300 bg-orange-50"
+          }`}>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-display font-bold text-lg">💳 Payment</h3>
+              <span className={`status-badge ${
+                ride.payment?.status === "paid"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-orange-100 text-orange-700"
+              }`}>
+                {ride.payment?.status === "paid" ? "✅ Paid" : "⏳ Unpaid"}
+              </span>
+            </div>
+
+            {ride.payment?.status === "paid" ? (
+              <div className="text-sm text-gray-600 space-y-1">
+                <p>💰 <span className="font-bold">₹{ride.fare}</span> paid via{" "}
+                  <span className="font-bold uppercase">{ride.payment.method}</span>
+                </p>
+                {ride.payment.razorpayPaymentId && (
+                  <p className="font-mono text-xs text-gray-400">
+                    ID: {ride.payment.razorpayPaymentId}
+                  </p>
+                )}
+                <p className="text-xs text-gray-400">
+                  {new Date(ride.payment.paidAt).toLocaleString("en-IN")}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <p className="text-sm text-gray-600 mb-4">
+                  Please pay <span className="font-bold text-auto-dark">₹{ride.fare}</span> for your ride.
+                </p>
+                <button
+                  onClick={() => navigate(`/payment/${ride._id}`)}
+                  className="btn-primary w-full py-3 text-base">
+                  💳 Pay Now ₹{ride.fare}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Cancel button */}
         {["pending", "accepted"].includes(ride.status) && user?.role === "user" && (
           <button onClick={handleCancel} disabled={cancelling}
