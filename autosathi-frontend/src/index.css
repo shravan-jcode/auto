@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #F5F5F0;
+    color: #1A1A2E;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-auto-yellow text-auto-dark font-bold font-display px-6 py-3 rounded-xl
+           hover:bg-saffron-500 hover:text-white transition-all duration-200
+           shadow-md hover:shadow-lg active:scale-95 cursor-pointer;
+  }
+  .btn-secondary {
+    @apply bg-auto-dark text-white font-bold font-display px-6 py-3 rounded-xl
+           hover:bg-auto-accent transition-all duration-200
+           shadow-md hover:shadow-lg active:scale-95 cursor-pointer;
+  }
+  .btn-danger {
+    @apply bg-red-500 text-white font-bold font-display px-6 py-3 rounded-xl
+           hover:bg-red-600 transition-all duration-200
+           shadow-md hover:shadow-lg active:scale-95 cursor-pointer;
+  }
+  .btn-success {
+    @apply bg-green-500 text-white font-bold font-display px-6 py-3 rounded-xl
+           hover:bg-green-600 transition-all duration-200
+           shadow-md hover:shadow-lg active:scale-95 cursor-pointer;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-md p-6 border border-gray-100;
+  }
+  .input-field {
+    @apply w-full border-2 border-gray-200 rounded-xl px-4 py-3 font-body
+           focus:outline-none focus:border-auto-yellow transition-colors duration-200
+           bg-gray-50 placeholder-gray-400;
+  }
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide;
+  }
+  .nav-link {
+    @apply flex items-center gap-2 px-4 py-2 rounded-xl font-semibold
+           hover:bg-yellow-50 hover:text-auto-yellow transition-all duration-200 cursor-pointer;
+  }
+  .section-title {
+    @apply font-display font-bold text-2xl text-auto-dark;
+  }
+  .page-container {
+    @apply max-w-5xl mx-auto px-4 py-8;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #FFB800; border-radius: 3px; }
+
+/* Auto Rickshaw animated road line */
+.road-line {
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0px, transparent 20px,
+    #FFB800 20px, #FFB800 40px
+  );
+  height: 4px;
+  animation: roadMove 1s linear infinite;
+}
+@keyframes roadMove {
+  from { background-position: 0 0; }
+  to   { background-position: 40px 0; }
+}
+
+/* Page transition */
+.page-enter {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease, transform 300ms ease;
+}

@@ -1,0 +1,9 @@
+cd auto
+
+cd autosathi-backend
+npm i
+nodemon server.js or npm run dev
+
+cd autosathi-frontend
+npm i
+npm start
