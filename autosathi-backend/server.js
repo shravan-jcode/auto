@@ -18,6 +18,7 @@ app.use("/api/auth",    require("./routes/authRoutes"));
 app.use("/api/rides",  require("./routes/rideRoutes"));
 app.use("/api/admin",  require("./routes/adminRoutes"));
 app.use("/api/payment", require("./routes/paymentRoutes"));
+app.use("/api/otp",     require("./routes/otpRoutes"));
 
 // ─── Health Check ─────────────────────────────────────────
 app.get("/", (req, res) => {

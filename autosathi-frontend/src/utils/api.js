@@ -46,3 +46,9 @@ export const deleteUser      = (id)  => API.delete(`/admin/users/${id}`);
 export const adminCancelRide = (id, reason) => API.put(`/admin/rides/${id}/cancel`, { reason });
 
 export default API;
+
+// ── OTP (no SMS — shown on screen, zero account needed) ───
+export const generateOTP    = (rideId)      => API.post(`/otp/generate/${rideId}`);
+export const getOTP         = (rideId)      => API.get(`/otp/${rideId}`);
+export const verifyOTP      = (rideId, otp) => API.post(`/otp/verify/${rideId}`, { otp });
+export const regenerateOTP  = (rideId)      => API.post(`/otp/regenerate/${rideId}`);

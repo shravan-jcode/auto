@@ -2,86 +2,54 @@ const mongoose = require("mongoose");
 
 const rideSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    driver: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
 
-    driver: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      default: null,
-    },
+    pickupLocation: { type: String, required: [true, "Pickup location is required"], trim: true },
+    dropLocation:   { type: String, required: [true, "Drop location is required"],   trim: true },
 
-    pickupLocation: {
-      type: String,
-      required: [true, "Pickup location is required"],
-      trim: true,
-    },
+    // ─── Map Coordinates ──────────────────────────────────
+    pickupCoords: { lat: { type: Number, default: null }, lng: { type: Number, default: null } },
+    dropCoords:   { lat: { type: Number, default: null }, lng: { type: Number, default: null } },
 
-    dropLocation: {
-      type: String,
-      required: [true, "Drop location is required"],
-      trim: true,
-    },
+    // ─── Fare ─────────────────────────────────────────────
+    distanceKm: { type: Number, default: 0 },
+    fare: { type: Number, required: [true, "Fare is required"], default: 0 },
 
-    // ─── Fare Details ─────────────────────────────────────
-    distanceKm: {
-      type: Number,
-      default: 0,
-    },
-
-    fare: {
-      type: Number,
-      required: [true, "Fare is required"],
-      default: 0,
-    },
-
-    // ─── Ride Status ──────────────────────────────────────
-    // pending → accepted → ongoing → completed
-    // or pending → cancelled
+    // ─── Status ───────────────────────────────────────────
+    // pending → accepted → otp_pending → ongoing → completed
     status: {
       type: String,
-      enum: ["pending", "accepted", "ongoing", "completed", "cancelled"],
+      enum: ["pending", "accepted", "otp_pending", "ongoing", "completed", "cancelled"],
       default: "pending",
     },
 
-    // ─── Driver Location (for live tracking) ─────────────
-    driverLocation: {
-      lat: { type: Number, default: null },
-      lng: { type: Number, default: null },
+    // ─── OTP (no SMS needed — shown on screen) ────────────
+    // Flow: driver accepts → OTP auto-generated → shown to USER on their screen
+    //       driver reaches user → user shows OTP → driver enters it → ride starts
+    otp: {
+      code:       { type: String,  default: null },   // 6-digit code
+      expiresAt:  { type: Date,    default: null },   // valid 15 min
+      verified:   { type: Boolean, default: false },  // true after driver enters it
+      attempts:   { type: Number,  default: 0 },      // wrong attempts counter
     },
 
-    // ─── Timestamps for each status ──────────────────────
-    acceptedAt: { type: Date, default: null },
-    startedAt:  { type: Date, default: null },
+    // ─── Driver Live Location ─────────────────────────────
+    driverLocation: { lat: { type: Number, default: null }, lng: { type: Number, default: null } },
+
+    // ─── Timestamps ───────────────────────────────────────
+    acceptedAt:  { type: Date, default: null },
+    startedAt:   { type: Date, default: null },
     completedAt: { type: Date, default: null },
     cancelledAt: { type: Date, default: null },
 
-    // ─── Rating (user gives rating after ride) ────────────
-    rating: {
-      type: Number,
-      min: 1,
-      max: 5,
-      default: null,
-    },
+    // ─── Rating ───────────────────────────────────────────
+    rating:        { type: Number, min: 1, max: 5, default: null },
+    ratingComment: { type: String, default: null },
+    ratedAt:       { type: Date,   default: null },
 
-    ratingComment: {
-      type: String,
-      default: null,
-    },
-
-    ratedAt: {
-      type: Date,
-      default: null,
-    },
-
-    // ─── Cancellation reason ─────────────────────────────
-    cancelReason: {
-      type: String,
-      default: null,
-    },
+    // ─── Cancel ───────────────────────────────────────────
+    cancelReason: { type: String, default: null },
 
     // ─── Payment (Razorpay) ───────────────────────────────
     payment: {
@@ -90,19 +58,12 @@ const rideSchema = new mongoose.Schema(
         enum: ["unpaid", "pending", "paid", "failed", "refunded"],
         default: "unpaid",
       },
-      method: {
-        type: String,
-        enum: ["online", "cash", null],
-        default: null,
-      },
-      // Razorpay order created before payment
-      razorpayOrderId: { type: String, default: null },
-      // Razorpay payment ID returned after success
+      method: { type: String, enum: ["online", "cash", null], default: null },
+      razorpayOrderId:   { type: String, default: null },
       razorpayPaymentId: { type: String, default: null },
-      // Razorpay signature for verification
       razorpaySignature: { type: String, default: null },
-      paidAt: { type: Date, default: null },
-      amount: { type: Number, default: 0 }, // in rupees
+      paidAt: { type: Date,   default: null },
+      amount: { type: Number, default: 0 },
     },
   },
   { timestamps: true }

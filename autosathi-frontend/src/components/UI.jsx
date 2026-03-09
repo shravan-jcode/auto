@@ -4,7 +4,8 @@ import React from "react";
 export function StatusBadge({ status }) {
   const map = {
     pending:   { bg: "bg-yellow-100 text-yellow-700",  icon: "⏳" },
-    accepted:  { bg: "bg-blue-100 text-blue-700",      icon: "✅" },
+    accepted:    { bg: "bg-blue-100 text-blue-700",    icon: "✅" },
+    otp_pending: { bg: "bg-amber-100 text-amber-700", icon: "🔐" },
     ongoing:   { bg: "bg-green-100 text-green-700",    icon: "🚗" },
     completed: { bg: "bg-purple-100 text-purple-700",  icon: "🏁" },
     cancelled: { bg: "bg-red-100 text-red-500",        icon: "❌" },
